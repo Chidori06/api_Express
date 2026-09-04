@@ -3,13 +3,16 @@ import roomsRepository from "../repositories/rooms.repository.ts"
 
 const getAllRooms = async () => {
     const rooms = await roomsRepository.findAllRooms();
+    if (!rooms) {
+        throw new Error("Pas de chambres");
+    }
     return rooms;
 };
 
 const getOneRoom = async (id: number) => {
     const oneRoom = await roomsRepository.findOneRoom(id);
     if (!oneRoom) {
-        throw new Error("Room not found");
+        throw new Error("La chambre n'existe pas");
     }
     return oneRoom;
 };
@@ -21,11 +24,17 @@ const createARoom = (name: string, capacity: number) => {
 
 const updateARoom = async (id: number, data: { name: string, capacity: number }) => {
     const room = await roomsRepository.findOneRoom(id);
+    if (!room) {
+        throw new Error("La chambre n'existe pas");
+    }
     return await roomsRepository.updateRoom(id, data);
 }
 
 const deleteARoom = async (id: number) => {
     const room = await roomsRepository.findOneRoom(id);
+    if (!room) {
+        throw new Error("La chambre n'existe pas");
+    }
     return roomsRepository.deleteRoom(id);
 };
 
