@@ -13,8 +13,8 @@ const findOneRoom = async (id: number) => {
     });
 };
 
-const createRoom = async (data: { name: string, capacity: number }) => {
-    return await prisma.room.create({ data });
+const createRoom = async (name: string, capacity: number) => {
+    return await prisma.room.create({ data: { name, capacity } });
 };
 
 const updateRoom = async (id: number, data: { name: string, capacity: number }) => {

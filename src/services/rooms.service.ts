@@ -3,16 +3,20 @@ import roomsRepository from "../repositories/rooms.repository.ts"
 
 const getAllRooms = async () => {
     const rooms = await roomsRepository.findAllRooms();
+    return rooms;
 };
 
 const getOneRoom = async (id: number) => {
     const oneRoom = await roomsRepository.findOneRoom(id);
+    if (!oneRoom) {
+        throw new Error("Room not found");
+    }
     return oneRoom;
 };
 
-const createARoom = async (data: { name: string, capacity: number }) => {
-    await roomsRepository.createRoom(data);
-}
+const createARoom = async (name: string, capacity: number) => {
+    return await roomsRepository.createRoom(name, capacity);
+};
 
 const updateARoom = async (id: number, data: { name: string, capacity: number }) => {
     const room = await roomsRepository.findOneRoom(id);
@@ -21,9 +25,9 @@ const updateARoom = async (id: number, data: { name: string, capacity: number })
 
 const deleteARoom = async (id: number) => {
     const room = await roomsRepository.findOneRoom(id);
-    return await roomsRepository.deleteRoom(id);
+    return roomsRepository.deleteRoom(id);
+};
 
-}
 
 export default {
     getAllRooms,
