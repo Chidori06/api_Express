@@ -40,6 +40,7 @@ const createRoom = async (req: Request, res: Response,) => {
     }
 };
 
+
 const updateRoom = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);

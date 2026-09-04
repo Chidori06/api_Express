@@ -14,9 +14,10 @@ const getOneRoom = async (id: number) => {
     return oneRoom;
 };
 
-const createARoom = async (name: string, capacity: number) => {
-    return await roomsRepository.createRoom(name, capacity);
+const createARoom = (name: string, capacity: number) => {
+    return roomsRepository.createRoom(name, capacity);
 };
+
 
 const updateARoom = async (id: number, data: { name: string, capacity: number }) => {
     const room = await roomsRepository.findOneRoom(id);
