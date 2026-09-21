@@ -16,4 +16,32 @@ model Room {
   id    Int     @id @default(autoincrement()) 
   name String 
   capacity  Int
+  reservations Reservation[]
 } 
+
+model Role {
+    id    Int     @id @default(autoincrement())
+    label String
+    users User[]
+  }
+
+model User {
+  id    Int     @id @default(autoincrement())
+  lastname String
+  firstname String
+  email String  @unique
+  password String
+  roleId Int
+  role Role @relation(fields: [roleId], references: [id])
+  reservations Reservation[]
+}
+
+model Reservation {
+    id    Int     @id @default(autoincrement())
+    userId Int
+    roomId Int
+    date_debut String
+    date_fin String
+    user User @relation(fields: [userId],references: [id])
+    room Room @relation(fields: [roomId],references: [id])
+  }

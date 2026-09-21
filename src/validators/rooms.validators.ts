@@ -15,7 +15,7 @@ export const createRoomSchema = z.object({
         .number()
         .int("La capacité de la salle doit être un nombre entier")
         .positive("La capacité de la salle doit être supérieure à 0")
-        .max(10000, "La capacité de la salle ne peut pas dépasser 1000"),
+        .max(1000, "La capacité de la salle ne peut pas dépasser 1000"),
 });
 
 export const updateRoomSchema = z.object({
@@ -30,7 +30,7 @@ export const updateRoomSchema = z.object({
         .number()
         .int()
         .positive()
-        .max(10000)
+        .max(1000)
         .optional(),
 }).refine(
     (data) => Object.keys(data).length > 0,

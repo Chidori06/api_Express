@@ -3,3 +3,5 @@ interface RoomDTO {
     name: string,
     capacity: number
 }
+
+export type { RoomDTO };
