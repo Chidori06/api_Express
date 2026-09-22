@@ -34,6 +34,23 @@ const deleteRoom = async (id: number) => {
     });
 };
 
+// const findRoomWithReservations = (id: number) => {
+//     return prisma.room.findUnique({
+//         where: {
+//             id,
+//         },
+//         include: {
+//             reservations: {
+//                 include: {
+//                     user: true,
+//                 },
+//             },
+//         },
+//     });
+// };
+
+
+
 export default {
     findAllRooms,
     findOneRoom,

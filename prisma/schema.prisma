@@ -40,8 +40,8 @@ model Reservation {
     id    Int     @id @default(autoincrement())
     userId Int
     roomId Int
-    date_debut String
-    date_fin String
+    dateDebut DateTime
+    dateFin DateTime
     user User @relation(fields: [userId],references: [id])
     room Room @relation(fields: [roomId],references: [id])
   }
