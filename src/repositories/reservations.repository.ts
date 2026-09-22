@@ -61,25 +61,33 @@ const deleteReservation = (id: number) => {
     });
 };
 
-//const findConflict = (roomId: number, dateDebut: Date, dateFin: Date) => {
-//     return prisma.reservation.findFirst({
-//         where: {
-//             roomId,
-//             dateDebut: {
-//                 lt: dateFin,
-//             },
-//             dateFin: {
-//                 gt: dateDebut,
-//             },
-//         },
-//     });
-// };
+const findConflict = (roomId: number, dateDebut: Date, dateFin: Date, excludeId?: number
+) => {
+    return prisma.reservation.findFirst({
+        where: {
+            roomId,
+
+            ...(excludeId !== undefined && {
+                id: {
+                    not: excludeId,
+                },
+            }),
+
+            dateDebut: {
+                lt: dateFin,
+            },
+            dateFin: {
+                gt: dateDebut,
+            },
+        },
+    });
+};
 
 
 export default {
     findAllReservations,
     findOneReservation,
-    // findConflict,
+    findConflict,
     createReservation,
     updateReservation,
     deleteReservation,
