@@ -20,7 +20,8 @@ const getRoleById = async (req: Request, res: Response) => {
         const role = await rolesService.getOneRole(id);
 
         return res.status(200).json(role);
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(500).json(error);
     }
 };
@@ -34,7 +35,8 @@ const createRole = async (req: Request, res: Response,) => {
         );
 
         return res.status(201).json(role);
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(500).json(error);
     }
 };
@@ -50,7 +52,8 @@ const updateRole = async (req: Request, res: Response) => {
         );
 
         return res.status(200).json(role);
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(500).json(error);
     }
 };
@@ -62,7 +65,8 @@ const deleteRole = async (req: Request, res: Response,) => {
         await rolesService.deleteARole(id);
 
         return res.status(204).send();
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(500).json(error);
     }
 };
