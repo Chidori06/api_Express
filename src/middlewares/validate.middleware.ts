@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ZodType } from "zod";
 
-const validateRoom = (
+const validate = (
     schema: ZodType,
     target: "body" | "params" | "query"
 ) => {
@@ -24,4 +24,4 @@ const validateRoom = (
     };
 };
 
-export default validateRoom;
+export default validate;

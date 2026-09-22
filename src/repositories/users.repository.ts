@@ -1,17 +1,5 @@
 import { prisma } from "../../lib/prisma.ts";
-
-const userInfo = {
-    id: true,
-    lastname: true,
-    firstname: true,
-    email: true,
-    role: {
-        select: {
-            id: true,
-            label: true,
-        },
-    },
-};
+import userInfo from "../selects/user.select.ts";
 
 export const findAllUsers = async () => {
     return prisma.user.findMany({

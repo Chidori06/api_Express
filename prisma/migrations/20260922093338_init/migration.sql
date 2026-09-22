@@ -1,4 +1,13 @@
 -- CreateTable
+CREATE TABLE `Room` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `capacity` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Role` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `label` VARCHAR(191) NOT NULL,
@@ -24,8 +33,8 @@ CREATE TABLE `Reservation` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `roomId` INTEGER NOT NULL,
-    `date_debut` VARCHAR(191) NOT NULL,
-    `date_fin` VARCHAR(191) NOT NULL,
+    `dateDebut` DATETIME(3) NOT NULL,
+    `dateFin` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

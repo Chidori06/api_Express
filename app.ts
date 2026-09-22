@@ -3,6 +3,7 @@ import roomRouter from "./src/routes/rooms.routes.ts";
 import cors from "cors";
 import roleRouter from "./src/routes/roles.router.ts";
 import userRouter from "./src/routes/users.router.ts";
+import resaRouter from "./src/routes/reservations.router.ts";
 
 const express = Express;
 const app = express();
@@ -21,4 +22,5 @@ app.listen(port, () => {
 app.use("/api", roomRouter);
 app.use("/api", roleRouter);
 app.use("/api", userRouter);
+app.use("/api", resaRouter);
 
