@@ -1,8 +1,9 @@
 import { prisma } from "../../lib/prisma.ts";
 import userInfo from "../selects/user.select.ts";
 
-export const findAllUsers = async () => {
+export const findAllUsers = async (email?: string) => {
     return prisma.user.findMany({
+        where: email ? { email } : undefined,
         select: userInfo,
     });
 };

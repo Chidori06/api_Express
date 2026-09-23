@@ -41,7 +41,13 @@ const createReservation = async (req: Request, res: Response,) => {
 const updateReservation = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
-        const resa = await reservationsService.updateAReservation(id, req.body);
+        const data = {
+            userId: Number(req.body.userId),
+            roomId: Number(req.body.roomId),
+            dateDebut: new Date(req.body.dateDebut),
+            dateFin: new Date(req.body.dateFin),
+        };
+        const resa = await reservationsService.updateAReservation(id, data);
         res.status(200).json(resa);
     }
     catch (error) {

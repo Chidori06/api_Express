@@ -1,9 +1,10 @@
 import usersRepository from "../repositories/users.repository.ts";
 
-const getAllUsers = async () => {
-    const users = await usersRepository.findAllUsers();
+const getAllUsers = async (email?: string) => {
+    const users = await usersRepository.findAllUsers(email);
     return users;
 };
+
 
 const getOneUser = async (id: number) => {
     const user = await usersRepository.findOneUser(id);
