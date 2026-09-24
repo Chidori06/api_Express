@@ -5,9 +5,19 @@ const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        const user = await authService.login(email, password);
+        const result = await authService.login(email, password);
 
-        return res.status(200).json(user);
+        res.cookie("token", result.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 60 * 60 * 1000,
+        });
+
+        return res.status(200).json({
+            user: result.user,
+        });
+
     } catch (error) {
         if (error instanceof Error && error.message === "INVALID_CREDENTIALS") {
             return res.status(401).json({

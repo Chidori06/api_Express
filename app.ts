@@ -7,6 +7,7 @@ import resaRouter from "./src/routes/reservations.router.ts";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger.ts";
 import authRouter from "./src/routes/auth.routes.ts";
+import cookieParser from "cookie-parser";
 
 
 const express = Express;
@@ -18,6 +19,7 @@ const port = 3000;
 // });
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api", roomRouter);
 app.use("/api", roleRouter);

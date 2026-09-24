@@ -3,6 +3,7 @@ import validate from "../middlewares/validate.middleware.ts";
 import usersController from "../controllers/users.controller.ts";
 import checkExists from "../middlewares/checkExists.middleware.ts";
 import { createUserSchema, updateUserSchema, userIdSchema } from "../validators/users.validators.ts";
+import authMiddleware from "../middlewares/auth.middleware.ts";
 
 const userRouter = Express.Router();
 
@@ -42,7 +43,8 @@ userRouter.get("/users", usersController.getUsers);
  *       404:
  *         description: Utilisateur introuvable
  */
-userRouter.get("/users/:id", validate(userIdSchema, "params"), checkExists.checkUserExists, usersController.getUserById);
+userRouter.get("/users/:id", validate(userIdSchema, "params"), authMiddleware.authenticate,
+    usersController.getUserById);
 
 /**
  * @swagger

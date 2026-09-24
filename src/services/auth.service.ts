@@ -1,5 +1,7 @@
 import usersRepository from "../repositories/users.repository.ts";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const login = async (email: string, password: string) => {
     const user = await usersRepository.findUserLogin(email);
@@ -17,7 +19,21 @@ const login = async (email: string, password: string) => {
         throw new Error("Identifiants");
     }
 
-    return usersRepository.findOneUser(user.id);
+    const token = jwt.sign(
+        {
+            userId: user.id,
+            roleId: user.role.id,
+        },
+        process.env.JWT_SECRET!,
+        {
+            expiresIn: "1h",
+        }
+    );
+
+    return {
+        user: await usersRepository.findOneUser(user.id),
+        token,
+    };
 };
 
 export default {
