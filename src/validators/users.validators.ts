@@ -27,6 +27,7 @@ export const createUserSchema = z.object({
         .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
 
     roleId: z
+        .coerce
         .number()
         .int()
         .positive(),
@@ -59,6 +60,7 @@ export const updateUserSchema = z.object({
         .optional(),
 
     roleId: z
+        .coerce
         .number()
         .int()
         .positive()

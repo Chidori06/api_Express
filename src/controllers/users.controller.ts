@@ -1,20 +1,41 @@
 import type { Request, Response } from "express";
 import usersService from "../services/users.service.ts";
 
+// const getUsers = async (req: Request, res: Response) => {
+//     try {
+//         const email = req.query.email
+//             ? String(req.query.email)
+//             : undefined;
+
+//         const users = await usersService.getAllUsers(email);
+
+//         res.status(200).json(users);
+//     }
+//     catch (error) {
+//         return res.status(500).json(error);
+//     }
+// };
 const getUsers = async (req: Request, res: Response) => {
     try {
+        console.log("QUERY :", req.query);
+
         const email = req.query.email
             ? String(req.query.email)
             : undefined;
 
+        console.log("EMAIL :", email);
+
         const users = await usersService.getAllUsers(email);
 
+        console.log("UTILISATEURS RETOURNÉS :", users);
+
         res.status(200).json(users);
-    }
-    catch (error) {
+    } catch (error) {
+        console.error(error);
         return res.status(500).json(error);
     }
 };
+
 
 
 const getUserById = async (req: Request, res: Response) => {

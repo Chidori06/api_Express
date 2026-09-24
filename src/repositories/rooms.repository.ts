@@ -27,29 +27,23 @@ const updateRoom = async (id: number, data: { name: string, capacity: number }) 
 };
 
 const deleteRoom = async (id: number) => {
+    const reservations = await prisma.reservation.count({
+        where: {
+            roomId: id,
+        },
+    });
+
+    if (reservations > 0) {
+        throw new Error(
+            "Impossible de supprimer cette salle car elle possède des réservations."
+        );
+    }
     return await prisma.room.delete({
         where: {
             id: Number(id),
         },
     });
 };
-
-// const findRoomWithReservations = (id: number) => {
-//     return prisma.room.findUnique({
-//         where: {
-//             id,
-//         },
-//         include: {
-//             reservations: {
-//                 include: {
-//                     user: true,
-//                 },
-//             },
-//         },
-//     });
-// };
-
-
 
 export default {
     findAllRooms,

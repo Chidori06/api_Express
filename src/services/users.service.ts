@@ -5,7 +5,6 @@ const getAllUsers = async (email?: string) => {
     return users;
 };
 
-
 const getOneUser = async (id: number) => {
     const user = await usersRepository.findOneUser(id);
     return user;
