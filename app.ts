@@ -6,6 +6,7 @@ import userRouter from "./src/routes/users.router.ts";
 import resaRouter from "./src/routes/reservations.router.ts";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger.ts";
+import authRouter from "./src/routes/auth.routes.ts";
 
 
 const express = Express;
@@ -22,6 +23,7 @@ app.use("/api", roomRouter);
 app.use("/api", roleRouter);
 app.use("/api", userRouter);
 app.use("/api", resaRouter);
+app.use("/api/auth", authRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {

@@ -136,8 +136,13 @@ userRouter.post("/users", validate(createUserSchema, "body"), usersController.cr
  *       404:
  *         description: Utilisateur introuvable
  */
-userRouter.patch("/users/:id", validate(userIdSchema, "params"), checkExists.checkUserExists,
-    validate(updateUserSchema, "body"), usersController.updateUser);
+userRouter.patch(
+    "/users/:id",
+    validate(userIdSchema, "params"),
+    validate(updateUserSchema, "body"),
+    usersController.updateUser
+);
+
 
 /**
  * @swagger

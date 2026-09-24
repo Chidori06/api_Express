@@ -30,8 +30,8 @@ export const createUser = async (lastname: string, firstname: string, email: str
 };
 
 export const updateUser = async (id: number, data: {
-    lastname: string; firstname: string; email: string;
-    roleId: number
+    lastname?: string; firstname?: string; email?: string;
+    roleId?: number
 }) => {
     return prisma.user.update({
         where: { id },
@@ -45,12 +45,31 @@ export const deleteUser = async (id: number) => {
         where: { id },
     });
 };
+
+export const findUserLogin = async (email: string) => {
+    return prisma.user.findUnique({
+        where: { email },
+        select: {
+            id: true,
+            email: true,
+            password: true,
+            role: {
+                select: {
+                    id: true,
+                    label: true,
+                },
+            },
+        },
+    });
+};
+
 export default {
     userInfo,
     findAllUsers,
     findOneUser,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    findUserLogin
 
 }

@@ -1,4 +1,5 @@
 import usersRepository from "../repositories/users.repository.ts";
+import bcrypt from "bcrypt";
 
 const getAllUsers = async (email?: string) => {
     const users = await usersRepository.findAllUsers(email);
@@ -12,17 +13,24 @@ const getOneUser = async (id: number) => {
 
 const createAUser = async (lastname: string, firstname: string, email: string, password: string, roleId: number
 ) => {
-    return usersRepository.createUser(lastname, firstname, email, password, roleId);
+    const passwordHash = await bcrypt.hash(password, 12);
+    return usersRepository.createUser(lastname, firstname, email, passwordHash, roleId);
 };
 
 const updateAUser = async (id: number, data: {
-    lastname: string; firstname: string; email: string;
-    password: string; roleId: number;
+    lastname?: string; firstname?: string; email?: string;
+    password?: string; roleId?: number;
 }
 ) => {
-    const user = await usersRepository.findOneUser(id);
+    const dataToUpdate = {
+        ...data,
+    };
 
-    return usersRepository.updateUser(id, data);
+    if (data.password) {
+        dataToUpdate.password = await bcrypt.hash(data.password, 12);
+    }
+
+    return usersRepository.updateUser(id, dataToUpdate);
 };
 
 const deleteAUser = async (id: number) => {
