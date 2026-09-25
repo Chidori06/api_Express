@@ -10,6 +10,7 @@ const login = async (req: Request, res: Response) => {
         res.cookie("token", result.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            //vaut mieux même en strict pour l'avoir que sur notre navigateur
             sameSite: "lax",
             maxAge: 60 * 60 * 1000,
         });

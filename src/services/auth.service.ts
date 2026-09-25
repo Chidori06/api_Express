@@ -16,7 +16,7 @@ const login = async (email: string, password: string) => {
     );
 
     if (!validPassword) {
-        throw new Error("Identifiants");
+        throw new Error("Identifiants invalides");
     }
 
     const token = jwt.sign(
