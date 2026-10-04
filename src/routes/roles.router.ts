@@ -4,6 +4,7 @@ import rolesController from "../controllers/roles.controller.ts";
 import validate from "../middlewares/validate.middleware.ts";
 import checkExists from "../middlewares/checkExists.middleware.ts";
 import { createRoleSchema, roleIdSchema, updateRoleSchema } from "../validators/roles.validators.ts";
+import authMiddleware from "../middlewares/auth.middleware.ts";
 
 const roleRouter = Express.Router();
 
@@ -18,7 +19,7 @@ const roleRouter = Express.Router();
  *       200:
  *         description: Liste des rôles
  */
-roleRouter.get("/roles", rolesController.getRoles);
+roleRouter.get("/roles", authMiddleware.authenticate, rolesController.getRoles);
 
 /**
  * @swagger
@@ -44,7 +45,7 @@ roleRouter.get("/roles", rolesController.getRoles);
  *         description: Rôle introuvable
  */
 roleRouter.get("/roles/:id", validate(roleIdSchema, "params"), checkExists.checkRoleExists,
-    rolesController.getRoleById);
+    authMiddleware.authenticate, rolesController.getRoleById);
 
 /**
  * @swagger
@@ -71,7 +72,8 @@ roleRouter.get("/roles/:id", validate(roleIdSchema, "params"), checkExists.check
  *       400:
  *         description: Données invalides
  */
-roleRouter.post("/roles", validate(createRoleSchema, "body"), rolesController.createRole);
+roleRouter.post("/roles", validate(createRoleSchema, "body"),
+    authMiddleware.authenticate, rolesController.createRole);
 
 /**
  * @swagger
@@ -107,7 +109,7 @@ roleRouter.post("/roles", validate(createRoleSchema, "body"), rolesController.cr
  *         description: Rôle introuvable
  */
 roleRouter.patch("/roles/:id", validate(roleIdSchema, "params"), checkExists.checkRoleExists,
-    validate(updateRoleSchema, "body"), rolesController.updateRole);
+    validate(updateRoleSchema, "body"), authMiddleware.authenticate, rolesController.updateRole);
 
 /**
  * @swagger
@@ -132,6 +134,7 @@ roleRouter.patch("/roles/:id", validate(roleIdSchema, "params"), checkExists.che
  *       404:
  *         description: Rôle introuvable
  */
-roleRouter.delete("/roles/:id", validate(roleIdSchema, "params"), checkExists.checkRoleExists, rolesController.deleteRole);
+roleRouter.delete("/roles/:id", validate(roleIdSchema, "params"), checkExists.checkRoleExists,
+    authMiddleware.authenticate, rolesController.deleteRole);
 
 export default roleRouter;

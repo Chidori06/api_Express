@@ -3,6 +3,7 @@ import roomsController from "../controllers/rooms.controller.ts";
 import { createRoomSchema, roomIdSchema, updateRoomSchema } from "../validators/rooms.validators.ts";
 import validate from "../middlewares/validate.middleware.ts";
 import checkExists from "../middlewares/checkExists.middleware.ts";
+import authMiddleware from "../middlewares/auth.middleware.ts";
 
 
 const roomRouter = Express.Router();
@@ -19,7 +20,7 @@ const roomRouter = Express.Router();
  *       200:
  *         description: Liste des salles
  */
-roomRouter.get("/rooms", roomsController.getRooms);
+roomRouter.get("/rooms", authMiddleware.authenticate, roomsController.getRooms);
 
 /**
  * @swagger
@@ -43,7 +44,7 @@ roomRouter.get("/rooms", roomsController.getRooms);
  *         description: Salle introuvable
  */
 roomRouter.get("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    roomsController.getRoomById);
+    authMiddleware.authenticate, roomsController.getRoomById);
 
 /**
  * @swagger
@@ -74,7 +75,8 @@ roomRouter.get("/rooms/:id", validate(roomIdSchema, "params"), checkExists.check
  *       400:
  *         description: Données invalides
  */
-roomRouter.post("/rooms", validate(createRoomSchema, "body"), roomsController.createRoom);
+roomRouter.post("/rooms", validate(createRoomSchema, "body"),
+    authMiddleware.authenticate, roomsController.createRoom);
 
 /**
  * @swagger
@@ -116,7 +118,7 @@ roomRouter.post("/rooms", validate(createRoomSchema, "body"), roomsController.cr
  *         description: Salle introuvable
  */
 roomRouter.patch("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    validate(updateRoomSchema, "body"), roomsController.updateRoom);
+    validate(updateRoomSchema, "body"), authMiddleware.authenticate, roomsController.updateRoom);
 
 /**
  * @swagger
@@ -142,7 +144,7 @@ roomRouter.patch("/rooms/:id", validate(roomIdSchema, "params"), checkExists.che
  *         description: Impossible de supprimer la salle
  */
 roomRouter.delete("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    roomsController.deleteRoom);
+    authMiddleware.authenticate, roomsController.deleteRoom);
 
 export default roomRouter;
 

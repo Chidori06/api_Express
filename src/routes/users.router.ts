@@ -18,7 +18,7 @@ const userRouter = Express.Router();
  *       200:
  *         description: Liste des utilisateurs
  */
-userRouter.get("/users", usersController.getUsers);
+userRouter.get("/users", authMiddleware.authenticate, usersController.getUsers);
 
 /**
  * @swagger
@@ -89,7 +89,7 @@ userRouter.get("/users/:id", validate(userIdSchema, "params"), authMiddleware.au
  *       400:
  *         description: Données invalides
  */
-userRouter.post("/users", validate(createUserSchema, "body"), usersController.createUser);
+userRouter.post("/users", validate(createUserSchema, "body"), authMiddleware.authenticate, usersController.createUser);
 
 /**
  * @swagger
@@ -139,10 +139,8 @@ userRouter.post("/users", validate(createUserSchema, "body"), usersController.cr
  *         description: Utilisateur introuvable
  */
 userRouter.patch(
-    "/users/:id",
-    validate(userIdSchema, "params"),
-    validate(updateUserSchema, "body"),
-    usersController.updateUser
+    "/users/:id", validate(userIdSchema, "params"), validate(updateUserSchema, "body"),
+    authMiddleware.authenticate, usersController.updateUser
 );
 
 
@@ -169,6 +167,7 @@ userRouter.patch(
  *       404:
  *         description: Utilisateur introuvable
  */
-userRouter.delete("/users/:id", validate(userIdSchema, "params"), checkExists.checkUserExists, usersController.deleteUser);
+userRouter.delete("/users/:id", validate(userIdSchema, "params"), checkExists.checkUserExists,
+    authMiddleware.authenticate, usersController.deleteUser);
 
 export default userRouter;
