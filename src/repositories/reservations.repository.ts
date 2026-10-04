@@ -1,8 +1,14 @@
 import { prisma } from "../../lib/prisma.ts";
+import { ROLES } from "../selects/role.select.ts";
 import userInfo from "../selects/user.select.ts";
 
-const findAllReservations = () => {
+const findAllReservations = (userId: number, roleId: number) => {
     return prisma.reservation.findMany({
+        where: roleId === ROLES.ADMIN
+            ? undefined
+            : {
+                userId,
+            },
         include: {
             user: {
                 select: userInfo,
@@ -11,6 +17,7 @@ const findAllReservations = () => {
         },
     });
 };
+
 
 const findOneReservation = (id: number) => {
     return prisma.reservation.findUnique({

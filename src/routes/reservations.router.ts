@@ -44,7 +44,7 @@ resaRouter.get("/reservations", authMiddleware.authenticate, reservationsControl
  *         description: Réservation introuvable
  */
 resaRouter.get("/reservations/:id", validate(reservationIdSchema, "params"),
-    checkExists.checkReservationExists, authMiddleware.authenticate,
+    authMiddleware.authenticate, checkExists.checkReservationExists,
     reservationsController.getReservationById);
 
 /**
@@ -137,8 +137,9 @@ resaRouter.post("/reservations", validate(createReservationSchema, "body"),
  *       404:
  *         description: Réservation introuvable
  */
-resaRouter.patch("/reservations/:id", validate(reservationIdSchema, "params"), checkExists.checkReservationExists,
-    validate(updateReservationSchema, "body"), authMiddleware.authenticate, reservationsController.updateReservation);
+resaRouter.patch("/reservations/:id", validate(reservationIdSchema, "params"), authMiddleware.authenticate,
+    checkExists.checkReservationExists, validate(updateReservationSchema, "body"),
+    reservationsController.updateReservation);
 
 /**
  * @swagger
@@ -163,7 +164,8 @@ resaRouter.patch("/reservations/:id", validate(reservationIdSchema, "params"), c
  *       404:
  *         description: Réservation introuvable
  */
-resaRouter.delete("/reservations/:id", validate(reservationIdSchema, "params"), checkExists.checkReservationExists,
-    authMiddleware.authenticate, reservationsController.deleteReservation);
+resaRouter.delete("/reservations/:id", validate(reservationIdSchema, "params"),
+    authMiddleware.authenticate, checkExists.checkReservationExists,
+    reservationsController.deleteReservation);
 
 export default resaRouter;

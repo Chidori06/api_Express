@@ -4,6 +4,9 @@ import { createRoomSchema, roomIdSchema, updateRoomSchema } from "../validators/
 import validate from "../middlewares/validate.middleware.ts";
 import checkExists from "../middlewares/checkExists.middleware.ts";
 import authMiddleware from "../middlewares/auth.middleware.ts";
+import authorize from "../middlewares/authorize.middleware.ts";
+import { ROLES } from "../selects/role.select.ts";
+
 
 
 const roomRouter = Express.Router();
@@ -43,8 +46,8 @@ roomRouter.get("/rooms", authMiddleware.authenticate, roomsController.getRooms);
  *       404:
  *         description: Salle introuvable
  */
-roomRouter.get("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    authMiddleware.authenticate, roomsController.getRoomById);
+roomRouter.get("/rooms/:id", validate(roomIdSchema, "params"), authMiddleware.authenticate,
+    checkExists.checkRoomExists, roomsController.getRoomById);
 
 /**
  * @swagger
@@ -76,7 +79,7 @@ roomRouter.get("/rooms/:id", validate(roomIdSchema, "params"), checkExists.check
  *         description: Données invalides
  */
 roomRouter.post("/rooms", validate(createRoomSchema, "body"),
-    authMiddleware.authenticate, roomsController.createRoom);
+    authMiddleware.authenticate, authorize(ROLES.ADMIN), roomsController.createRoom);
 
 /**
  * @swagger
@@ -117,8 +120,9 @@ roomRouter.post("/rooms", validate(createRoomSchema, "body"),
  *       404:
  *         description: Salle introuvable
  */
-roomRouter.patch("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    validate(updateRoomSchema, "body"), authMiddleware.authenticate, roomsController.updateRoom);
+roomRouter.patch("/rooms/:id", validate(roomIdSchema, "params"), authMiddleware.authenticate,
+    authorize(ROLES.ADMIN), checkExists.checkRoomExists,
+    validate(updateRoomSchema, "body"), roomsController.updateRoom);
 
 /**
  * @swagger
@@ -143,8 +147,8 @@ roomRouter.patch("/rooms/:id", validate(roomIdSchema, "params"), checkExists.che
  *       500:
  *         description: Impossible de supprimer la salle
  */
-roomRouter.delete("/rooms/:id", validate(roomIdSchema, "params"), checkExists.checkRoomExists,
-    authMiddleware.authenticate, roomsController.deleteRoom);
+roomRouter.delete("/rooms/:id", validate(roomIdSchema, "params"), authMiddleware.authenticate,
+    authorize(ROLES.ADMIN), checkExists.checkRoomExists, roomsController.deleteRoom);
 
 export default roomRouter;
 
