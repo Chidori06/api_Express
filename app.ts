@@ -14,10 +14,12 @@ const express = Express;
 const app = express();
 const port = 3000;
 
-// app.get("/", (req, res) => {
-//     res.send("Hello World!");
-// });
-app.use(cors());
+app.use(cors(
+    {
+        origin: "http://localhost:3001",
+        credentials: true,
+    }
+));
 app.use(express.json());
 app.use(cookieParser());
 

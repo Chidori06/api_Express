@@ -9,11 +9,7 @@ const getUsers = async (req: Request, res: Response) => {
             ? String(req.query.email)
             : undefined;
 
-        console.log("EMAIL :", email);
-
         const users = await usersService.getAllUsers(email);
-
-        console.log("UTILISATEURS RETOURNÉS :", users);
 
         res.status(200).json(users);
     } catch (error) {

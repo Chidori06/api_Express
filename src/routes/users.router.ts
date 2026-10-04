@@ -4,6 +4,7 @@ import usersController from "../controllers/users.controller.ts";
 import checkExists from "../middlewares/checkExists.middleware.ts";
 import { createUserSchema, updateUserSchema, userIdSchema } from "../validators/users.validators.ts";
 import authMiddleware from "../middlewares/auth.middleware.ts";
+import authorize from "../middlewares/authorize.middleware.ts";
 
 const userRouter = Express.Router();
 
@@ -89,7 +90,8 @@ userRouter.get("/users/:id", validate(userIdSchema, "params"), authMiddleware.au
  *       400:
  *         description: Données invalides
  */
-userRouter.post("/users", validate(createUserSchema, "body"), authMiddleware.authenticate, usersController.createUser);
+userRouter.post("/users", validate(createUserSchema, "body"), authMiddleware.authenticate,
+    authorize(1), usersController.createUser);
 
 /**
  * @swagger
