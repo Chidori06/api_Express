@@ -5,6 +5,7 @@ import checkExists from "../middlewares/checkExists.middleware.ts";
 import { createUserSchema, updateUserSchema, userIdSchema } from "../validators/users.validators.ts";
 import authMiddleware from "../middlewares/auth.middleware.ts";
 import authorize from "../middlewares/authorize.middleware.ts";
+import { ROLES } from "../selects/role.select.ts";
 
 const userRouter = Express.Router();
 
@@ -19,7 +20,7 @@ const userRouter = Express.Router();
  *       200:
  *         description: Liste des utilisateurs
  */
-userRouter.get("/users", authMiddleware.authenticate, usersController.getUsers);
+userRouter.get("/users", authMiddleware.authenticate, authorize(ROLES.ADMIN), usersController.getUsers);
 
 /**
  * @swagger
@@ -45,7 +46,7 @@ userRouter.get("/users", authMiddleware.authenticate, usersController.getUsers);
  *         description: Utilisateur introuvable
  */
 userRouter.get("/users/:id", validate(userIdSchema, "params"), authMiddleware.authenticate,
-    usersController.getUserById);
+    authorize(ROLES.ADMIN), usersController.getUserById);
 
 /**
  * @swagger
@@ -91,7 +92,7 @@ userRouter.get("/users/:id", validate(userIdSchema, "params"), authMiddleware.au
  *         description: Données invalides
  */
 userRouter.post("/users", validate(createUserSchema, "body"), authMiddleware.authenticate,
-    authorize(1), usersController.createUser);
+    authorize(ROLES.ADMIN), usersController.createUser);
 
 /**
  * @swagger
@@ -142,7 +143,7 @@ userRouter.post("/users", validate(createUserSchema, "body"), authMiddleware.aut
  */
 userRouter.patch(
     "/users/:id", validate(userIdSchema, "params"), validate(updateUserSchema, "body"),
-    authMiddleware.authenticate, usersController.updateUser
+    authMiddleware.authenticate, authorize(ROLES.ADMIN), usersController.updateUser
 );
 
 
@@ -169,7 +170,7 @@ userRouter.patch(
  *       404:
  *         description: Utilisateur introuvable
  */
-userRouter.delete("/users/:id", validate(userIdSchema, "params"), checkExists.checkUserExists,
-    authMiddleware.authenticate, usersController.deleteUser);
+userRouter.delete("/users/:id", validate(userIdSchema, "params"), authMiddleware.authenticate,
+    authorize(ROLES.ADMIN), checkExists.checkUserExists, usersController.deleteUser);
 
 export default userRouter;

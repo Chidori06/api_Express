@@ -3,7 +3,6 @@ import usersService from "../services/users.service.ts";
 
 const getUsers = async (req: Request, res: Response) => {
     try {
-        console.log("QUERY :", req.query);
 
         const email = req.query.email
             ? String(req.query.email)
